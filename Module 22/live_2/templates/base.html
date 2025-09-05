@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MySite</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm mb-4 px-lg-5">
+  <div class="container-fluid">
+    <!-- Brand -->
+    <a class="navbar-brand fw-bold fs-4 text-primary" href="{% url 'home' %}">
+      <i class="bi bi-mortarboard-fill me-2"></i> MySite
+    </a>
+
+    <!-- Mobile Toggler -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+      aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar Items -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <!-- Left menu -->
+      <ul class="navbar-nav me-auto ms-lg-3">
+        <li class="nav-item">
+          <a class="nav-link active fw-semibold text-white" aria-current="page" href="{% url 'home' %}">
+            <i class="bi bi-house-door-fill me-1"></i> Home
+          </a>
+        </li>
+      </ul>
+
+      <!-- Right side -->
+      <div class="d-flex align-items-center">
+        {% if user.is_authenticated %}
+          <!-- Search form -->
+          <form class="d-flex me-3" method="get" action="{% url 'home' %}">
+            <input class="form-control form-control-sm me-2 rounded-pill" 
+                   type="search" 
+                   name="q" 
+                   placeholder="🔍 Search student..." 
+                   aria-label="Search" />
+            <button class="btn btn-primary btn-sm rounded-pill px-3 fw-semibold" type="submit">
+              Search
+            </button>
+          </form>
+
+          <!-- User dropdown -->
+          <div class="dropdown">
+            <a class="btn btn-outline-light btn-sm rounded-pill dropdown-toggle px-3" href="#" id="userMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              👋 {{ user.username }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+              <li><a class="dropdown-item" href="{% url 'change_password' %}">🔑 Change Password</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">🚪 Logout</a></li>
+            </ul>
+          </div>
+        {% else %}
+          <!-- Login / Signup buttons -->
+          <a href="{% url 'login' %}" class="btn btn-outline-primary btn-sm rounded-pill me-2 px-3">
+            Login
+          </a>
+          <a href="{% url 'signup' %}" class="btn btn-primary btn-sm rounded-pill px-3">
+            Signup
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Messages with SweetAlert -->
+{% if messages %}
+  {% for message in messages %}
+    <script>
+      Swal.fire({
+        icon: "{{ message.tags|default:'info' }}",
+        title: '{{ message|escapejs }}',
+        timer: 2500,
+        showConfirmButton: true
+      });
+    </script>
+  {% endfor %}
+{% endif %}
+
+<!-- Main content -->
+{% block content %}{% endblock content %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container mt-3">
+    <h1 class="mb-4 fw-bold text-center">All Student List</h1>
+    <div class="d-flex flex-wrap justify-content-start">
+      {% for student in students %}
+        <div class="card student-card m-3">
+          <a href="{% url 'student_detail' student.id %}"><img src="{{ student.photo.url }}" class="card-img-top student-img" alt="Student Photo" /></a>
+          <div class="card-body text-center">
+            <h5 class="card-title fw-bold">{{ student.name }}</h5>
+            <p class="text-muted mb-1">{{ student.email }}</p>
+            <p class="mb-3">
+              <a class="text-decoration-none" href="tel:{{ student.phone }}">{{ student.phone }}</a>
+            </p>
+            <div class="d-flex justify-content-center gap-2">
+              <a href="{% url 'update_student' student.id %}" class="btn btn-sm btn-outline-primary edit-btn">✏️ Edit</a>
+              <a href="{% url 'delete_student' student.id %}" class="btn btn-sm btn-outline-danger delete-btn">🗑 Delete</a>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}

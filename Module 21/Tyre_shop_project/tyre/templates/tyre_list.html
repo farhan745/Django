@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2 class="text-center mb-4 fw-bold">Available Tyres</h2>
+  
+  {% if tyres %}
+    <div class="row">
+      {% for tyre in tyres %}
+        <div class="col-md-3 mb-4 d-flex">
+          <div class="card tyre-card h-100 w-100 d-flex flex-column">
+            
+            {% if tyre.image %}
+            <div class="img-wrapper text-center">
+              <img src="{{ tyre.image.url }}" alt="{{ tyre.tyre_name }}" class="card-img-top small-img" />
+            </div>
+            {% endif %}
+            
+            <div class="card-body text-center d-flex flex-column">
+              <h5 class="card-title fw-bold">{{ tyre.tyre_name }}</h5>
+              <p class="text-muted">{{ tyre.company }}</p>
+              <div class="mt-auto">
+                <a href="{% url 'tyre_details' tyre.id %}" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                  View Details
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <h4 class="text-center mt-5">No tyres available</h4>
+  {% endif %}
+
+</div>
+
+<style>
+.tyre-card {
+  border: 2px solid #e0e0e0;
+  border-radius: 15px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
+
+.tyre-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  border-color: #007bff;
+}
+
+.img-wrapper {
+  height: 180px;
+  overflow: hidden;
+}
+
+.img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.img-wrapper:hover img {
+  transform: scale(1.05);
+}
+
+.btn-outline-primary {
+  border-width: 2px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+  background: linear-gradient(45deg, #007bff, #00bfff);
+  border-color: transparent;
+  color: #fff;
+}
+</style>
+{% endblock %}

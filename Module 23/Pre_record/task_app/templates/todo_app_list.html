@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block content %}
+
+  <div class="container mx-auto mt-10 px-4">
+
+    <!-- ✅ Toast Messages -->
+    {% if messages %}
+      <div class="space-y-3 mb-6">
+        {% for message in messages %}
+          <div
+            class="flex items-center justify-between px-4 py-3 rounded-lg shadow-md text-white animate-fade-in-down
+            {% if message.tags == 'success' %}
+              bg-green-500
+            {% elif message.tags == 'error' %}
+              bg-red-500
+            {% elif message.tags == 'warning' %}
+              bg-yellow-500
+            {% else %}
+              bg-blue-500
+            {% endif %}
+          ">
+            <span>{{ message }}</span>
+            <button onclick="this.parentElement.remove()" class="ml-4 font-bold">✖</button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+    <!-- ✅ End Toast Messages -->
+
+    <!-- Title with Create Task Button -->
+    <div class="flex items-center justify-between mb-8">
+      <h2 class="text-4xl font-extrabold text-gray-800 relative inline-block">
+        📋 My Tasks
+        <span class="absolute -bottom-2 left-0 w-1/2 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></span>
+      </h2>
+      <a href="{% url 'task-create' %}" class="bg-green-500 text-white px-5 py-2 rounded-lg font-semibold shadow-md transition-all duration-300 ease-in-out hover:bg-green-600 hover:shadow-lg hover:scale-105 hover:-translate-y-0.5 active:scale-95">➕ Create Task</a>
+    </div>
+
+    <!-- Task Table -->
+    {% if tasks.exists %}
+      <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-200 transition">
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-sm text-gray-700">
+            <thead>
+              <tr class="bg-gradient-to-r from-blue-50 to-blue-100 text-gray-700 uppercase text-xs tracking-wider">
+                <th class="py-4 px-6 text-left">#</th>
+                <th class="py-4 px-6 text-left">Task</th>
+                <th class="py-4 px-6 text-left">Status</th>
+                <th class="py-4 px-6 text-left">Actions</th>
+                <th class="py-4 px-6 text-left">Created By</th>
+
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+              {% for task in tasks %}
+                <tr class="group hover:bg-gray-50 transition duration-300">
+                  <td class="py-4 px-6 font-medium text-gray-900">{{ forloop.counter }}</td>
+                  <td class="py-4 px-6 relative">
+                    <span class="relative z-10">{{ task.title }}</span>
+                    <span class="absolute left-6 bottom-2 w-0 group-hover:w-[80%] h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-500 rounded"></span>
+                  </td>
+                  <td class="py-4 px-6">
+                    {% if task.completed %}
+                      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700 transition-all duration-500 cursor-pointer hover:bg-green-500 hover:text-white hover:scale-110 hover:shadow-lg">✅ Completed</span>
+                    {% else %}
+                      <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-700 transition-all duration-500 cursor-pointer hover:bg-yellow-500 hover:text-white hover:scale-110 hover:rotate-3 hover:shadow-lg">⏳ Pending</span>
+                    {% endif %}
+                  </td>
+                  <td>
+                    <div class="flex space-x-3">
+                      <a href="{% url 'task-update' task.id %}" class="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-semibold text-blue-600 bg-blue-100 hover:bg-blue-600 hover:text-white shadow-sm transition-all duration-300 ease-in-out hover:scale-105">✏️ Edit</a>
+                      <a href="{% url 'task-delete' task.id %}" class="inline-flex items-center px-3 py-1.5 rounded-md text-sm font-semibold text-red-600 bg-red-100 hover:bg-red-600 hover:text-white shadow-sm transition-all duration-300 ease-in-out hover:scale-105">🗑️ Delete</a>
+                    </div>
+                  </td>
+                  <td class="py-4 px-6 text-gray-600">{{ task.user.username }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    {% else %}
+      <p class="text-gray-500 text-center mt-6">No tasks found 🚫</p>
+    {% endif %}
+  </div>
+
+  <!-- ✅ Simple animation for toast -->
+  <style>
+    @keyframes fade-in-down {
+      0% { opacity: 0; transform: translateY(-20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in-down {
+      animation: fade-in-down 0.5s ease-out;
+    }
+  </style>
+
+{% endblock %}

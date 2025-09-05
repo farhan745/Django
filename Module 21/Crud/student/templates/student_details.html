@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>🎓 Student Details</h2>
+    <div class="card" style="width: 18rem;">
+        {% if student.photo %}
+        <img src="{{ student.photo.url }}" class="card-img-top" alt="{{ student.name }}">
+        {% else %}
+        <img src="https://via.placeholder.com/150" class="card-img-top" alt="No Image">
+        {% endif %}
+        <div class="card-body">
+            <h5 class="card-title">{{ student.name }}</h5>
+            <p class="card-text"><strong>Roll:</strong> {{ student.roll }}</p>
+            <p class="card-text"><strong>Class:</strong> {{ student.student_class }}</p>
+            <p class="card-text"><strong>Email:</strong> {{ student.email }}</p>
+            <a href="{% url 'student_update' student.id %}" class="btn btn-warning">Edit</a>
+            <a href="{% url 'student_delete' student.id %}" class="btn btn-danger">Delete</a>
+            <a href="{% url 'student_list' %}" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

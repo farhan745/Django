@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container my-5">
+
+  <!-- Main Card -->
+  <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+    <div class="row g-0">
+
+      <!-- Tyre Image Section -->
+      <div class="col-md-6 bg-light d-flex align-items-center justify-content-center">
+        {% if tyre.image %}
+          <img src="{{ tyre.image.url }}" alt="{{ tyre.tyre_name }}"
+               class="img-fluid w-100 h-100" 
+               style="object-fit: cover; max-height: 500px;">
+        {% else %}
+          <div class="text-center p-5 text-muted">
+            <i class="bi bi-image" style="font-size: 3rem;"></i>
+            <p class="mt-3">Image not available</p>
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Tyre Info Section -->
+      <div class="col-md-6 p-5 d-flex flex-column justify-content-center">
+        <h2 class="fw-bold mb-3 text-primary">{{ tyre.tyre_name }}</h2>
+        <hr class="mb-4">
+
+        <p class="mb-3">
+          <span class="fw-semibold">Size:</span>
+          <span class="badge bg-secondary fs-6">{{ tyre.tyre_size }}</span>
+        </p>
+
+        <p class="mb-3">
+          <span class="fw-semibold">Company:</span> 
+          <span class="text-dark">{{ tyre.company }}</span>
+        </p>
+
+        <p class="mb-4">
+          <span class="fw-semibold">Description:</span><br>
+          <span class="text-muted">{{ tyre.description }}</span>
+        </p>
+
+        <!-- Back Button -->
+        <a href="{% url 'tyre_list' %}" 
+           class="btn btn-outline-primary rounded-pill px-4 py-2 shadow-sm align-self-start">
+          <i class="bi bi-arrow-left me-2"></i> Back to Tyre List
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

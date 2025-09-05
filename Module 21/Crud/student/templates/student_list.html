@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-4">🎓 Student List</h2>
+  <a href="{% url 'student_create' %}" class="btn btn-primary mb-4">+ Add Student</a>
+
+  <div class="row">
+    {% for student in students %}
+      <div class="col-md-4 mb-4">
+        <div class="student-card" data-bs-toggle="modal" data-bs-target="#editModal{{ student.id }}">
+         <a href="{% url 'student_detail' student.id %}" class="text-decoration-none">
+          <div class="card shadow-sm h-100 hover-card">
+            <img src="{{ student.photo.url }}" class="card-img-top" alt="{{ student.name }}" style="height: 200px; object-fit: cover;">
+            <div class="card-body text-center">
+              <h5 class="card-title mb-1 text-dark">{{ student.name }}</h5>
+              <p class="card-text text-muted">Roll: {{ student.roll }}</p>
+            </div>
+          </div>
+        </a>
+
+          <!-- Hover buttons -->
+          <div class="card-hover-buttons d-flex justify-content-center gap-2">
+            <a href="{% url 'student_update' student.id %}" class="btn btn-sm btn-warning">Edit</a>
+            <a href="{% url 'student_delete' student.id %}" class="btn btn-sm btn-danger">Delete</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal for Edit -->
+      <div class="modal fade" id="editModal{{ student.id }}" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Edit {{ student.name }}</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+              <!-- Example form (replace with Django form if needed) -->
+              <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                  <label>Name</label>
+                  <input type="text" class="form-control" value="{{ student.name }}">
+                </div>
+                <div class="mb-3">
+                  <label>Roll</label>
+                  <input type="number" class="form-control" value="{{ student.roll }}">
+                </div>
+                <div class="mb-3">
+                  <label>Photo</label>
+                  <input type="file" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-success w-100">Save</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    {% empty %}
+      <div class="col-12">
+        <div class="alert alert-info">No students found.</div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<style>
+/* Card wrapper */
+.student-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 15px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  transition: transform 0.3s, box-shadow 0.3s;
+  cursor: pointer;
+}
+
+/* Hover effects */
+.student-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.3);
+}
+
+/* Full card image */
+.student-card .card-img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Card content overlay */
+.student-card .card-content {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.5);
+  color: white;
+  padding: 1rem;
+  z-index: 2;
+}
+
+/* Buttons on hover */
+.card-hover-buttons {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+  z-index: 3;
+}
+
+.student-card:hover .card-hover-buttons {
+  opacity: 1;
+}
+
+/* Animated neon gradient border */
+.student-card::before {
+  content: '';
+  position: absolute;
+  top: -4px; left: -4px; right: -4px; bottom: -4px;
+  border-radius: 20px;
+  background: linear-gradient(270deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #8b00ff);
+  background-size: 1400% 1400%;
+  z-index: 0;
+  animation: borderGradient 8s linear infinite;
+  -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+}
+
+/* Keep content above the border */
+.student-card > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Gradient animation */
+@keyframes borderGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+</style>
+
+{% endblock %}

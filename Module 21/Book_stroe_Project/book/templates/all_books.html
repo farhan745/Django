@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <!-- Toast Container -->
+    <!-- Toast Container -->
+    <div class="position-fixed top-0 end-0 p-3" style="z-index: 1100">
+      {% if messages %}
+        {% for message in messages %}
+          <div class="toast show align-items-center text-bg-{{ message.tags }} border-0 mb-2" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="3000" data-bs-autohide="true">
+            <div class="d-flex">
+              <div class="toast-body">{{ message }}</div>
+              <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
+      <h1 class="fw-bold text-success">📚 All Books</h1>
+      <a href="{% url 'create_book' %}" class="btn btn-success btn-sm shadow rounded-pill px-3 d-flex align-items-center gap-1"><span>➕</span> <span>Create Book</span></a>
+    </div>
+
+    {% if books %}
+      <div class="card shadow-sm rounded-3">
+        <div class="card-body p-0">
+          <table class="table table-hover table-striped align-middle mb-0">
+            <thead class="table-success text-center">
+              <tr>
+                <th>ID</th>
+                <th>Book Name</th>
+                <th>Author</th>
+                <th>Category</th>
+                <th>First Publication</th>
+                <th>Last Publication</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in books %}
+                <tr class="text-center">
+                  <td class="fw-bold">{{ item.id }}</td>
+                  <td>{{ item.book_name }}</td>
+                  <td>{{ item.author }}</td>
+                  <td>
+                    <span class="badge bg-info text-dark px-2">{{ item.category }}</span>
+                  </td>
+                  <td>{{ item.first_published|date:'d M Y H:i:s' }}</td>
+                  <td>{{ item.last_published|date:'d M Y H:i:s' }}</td>
+
+                  <td>
+                    <div class="d-flex justify-content-center gap-2">
+                      <a class="btn btn-outline-secondary btn-sm rounded-pill px-3" href="{% url 'update_book' item.id %}">✏ Update</a>
+                      <a class="btn btn-outline-danger btn-sm rounded-pill px-3" href="{% url 'delete_book' item.id %}">🗑 Delete</a>
+                    </div>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    {% else %}
+      <h3 class="text-center p-5 text-muted">No Data Available</h3>
+    {% endif %}
+  </div>
+{% endblock %}

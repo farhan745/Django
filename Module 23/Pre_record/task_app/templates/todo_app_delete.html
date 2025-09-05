@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="max-w-lg mx-auto mt-10 bg-white p-8 rounded-2xl shadow-2xl border border-gray-200 transition">
+        <h2 class="text-3xl font-extrabold text-gray-800 mb-6 relative inline-block">
+        🗑️ Delete Task
+        <span class="absolute -bottom-2 left-0 w-1/2 h-1 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"></span>
+        </h2>
+        <p class="mb-6 text-gray-600">Are you sure you want to delete the task: <span class="font-semibold text-red-600">"{{ task.title }}"</span>?</p>
+        <form method="post" class="space-y-6">
+        {% csrf_token %}
+        <button type="submit" class="w-full bg-red-600 text-white px-5 py-2 rounded-lg font-semibold shadow-md transition-all duration-300 ease-in-out hover:bg-red-700 hover:shadow-lg hover:scale-105 hover:-translate-y-0.5 active:scale-95">🗑️ Confirm Delete</button>
+        <a href="{% url 'task-list' %}" class="w-full block text-center bg-gray-200 text-gray-800 px-5 py-2 rounded-lg font-semibold shadow-md transition-all duration-300 ease-in-out hover:bg-gray-300 hover:shadow-lg hover:scale-105 hover:-translate-y-0.5 active:scale-95">❌ Cancel</a>
+        </form>
+    </div>
+{% endblock %}

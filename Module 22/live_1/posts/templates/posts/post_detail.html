@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Post Details{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <!-- Post details -->
+  <h2>{{ post.title }}</h2>
+  <p>{{ post.content }}</p>
+  <hr>
+
+  <!-- Comment form -->
+<div class="card shadow-sm mb-2 comment-box">
+  <div class="card-body">
+    <form method="POST" action="{% url 'create_comment' post.id %}">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+    </form>
+  </div>
+</div>
+<style>
+  .comment-box {
+  max-width: 350px;   /* Width ছোট করা */
+  margin: auto;       /* মাঝখানে আনা */
+  }
+
+  .comment-box .card-body {
+    padding: 6px 10px;  /* Height কমানোর জন্য কম padding */
+  }
+
+  .comment-box .btn {
+    padding: 2px 8px;   /* বাটন ছোট */
+    font-size: 13px;    /* বাটন টেক্সট ছোট */
+  }
+
+</style>
+
+  <!-- Show comments -->
+  <h4 class="mt-4">Comments</h4>
+  <ul class="list-group">
+    {% if comments %}
+      {% for comment in comments %}
+        <li class="list-group-item">
+          <strong>{{ comment.author }}</strong><br>
+          {{ comment.text }}<br>
+          <small class="text-muted">{{ comment.created_at|date:"M d, Y H:i" }}</small>
+        </li>
+      {% endfor %}
+    {% else %}
+      <li class="list-group-item">No comments yet.</li>
+    {% endif %}
+  </ul>
+</div>
+{% endblock %}

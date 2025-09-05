@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="container mt-4">
+  {% if edit %}
+    <h2>{{ form.instance.pk|yesno:"Update Student,Add Student" }}</h2>
+  {% else %}
+    <h2>Update Student</h2>
+  {% endif %}
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button class="btn btn-success mt-2">Save</button>
+  </form>
+</div>
+{% endblock %}
