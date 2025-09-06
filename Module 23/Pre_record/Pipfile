@@ -6,6 +6,9 @@ name = "pypi"
 [packages]
 django = "*"
 django-tailwind = "*"
+pillow = "*"
+gunicorn = "*"
+whitenoise = "*"
 
 [dev-packages]
 
