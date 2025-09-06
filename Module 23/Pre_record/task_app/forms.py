@@ -2,6 +2,7 @@ from django import forms
 from .models import Task
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.contrib.auth.forms import PasswordResetForm
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
@@ -47,4 +48,9 @@ class LoginForm(forms.Form):
         max_length=128,
         required=True,
         widget=forms.PasswordInput(attrs={'class': 'form-input', 'placeholder': 'Password'}))
-    
+class MyPasswordResetForm(PasswordResetForm):
+    email = forms.EmailField(
+        label='Email',
+        max_length=255,
+        required=True,
+        widget=forms.EmailInput(attrs={'class': 'form-input', 'placeholder': 'Email'}))

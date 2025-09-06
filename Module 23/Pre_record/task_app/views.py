@@ -102,3 +102,7 @@ def logout_view(request):
     logout(request)
     messages.success(request, 'Logout successful.')
     return redirect('login')
+
+def user_profile(request, username):
+    user = get_object_or_404(User, username=username)
+    return render(request, 'user_profile.html', {'user': user})

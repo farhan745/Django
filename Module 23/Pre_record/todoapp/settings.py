@@ -127,6 +127,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
@@ -138,3 +140,4 @@ import os
 # Media settings
 MEDIA_URL = '/media/'                  # browser e access korar path
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # server e file save hobe ei folder e
+

@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}
+  Profile - {{ user.username }}
+{% endblock %}
+
+{% block content %}
+  <div class="flex justify-center mt-12">
+    <div class="bg-white rounded-2xl shadow-xl w-full max-w-md p-8 transition-transform transform hover:scale-105">
+      <!-- Profile Image -->
+      <div class="relative w-32 h-32 mx-auto">
+        <a href="{{ user.profile.profile.url }}"
+          target="_blank">
+          <img src="{% if user.profile.profile %}
+              {{ user.profile.profile.url }}
+            {% else %}
+              {% static 'default_profile.png' %}
+            {% endif %}"
+            alt="{{ user.username }}"
+            class="w-32 h-32 rounded-full object-cover" />
+        </a>
+
+        <span class="absolute bottom-0 right-0 bg-green-500 w-4 h-4 rounded-full border-2 border-white"></span>
+      </div>
+
+      <!-- Username -->
+      <h1 class="mt-5 text-3xl font-bold text-gray-800 text-center">{{ user.username }}</h1>
+
+      <!-- Email -->
+      <p class="text-gray-600 mt-2 text-center">{{ user.email }}</p>
+
+      <!-- Bio -->
+      {% if user.profile.bio %}
+        <p class="text-gray-700 mt-3 italic text-center px-4">{{ user.profile.bio }}</p>
+      {% endif %}
+
+      <!-- Info Cards -->
+      <div class="mt-6 grid grid-cols-2 gap-4 text-gray-700">
+        <div class="bg-gray-50 p-4 rounded-xl shadow-sm text-center">
+          <p class="font-semibold">Joined</p>
+          <p class="mt-1 text-gray-600">{{ user.date_joined|date:'F j, Y' }}</p>
+        </div>
+        <div class="bg-gray-50 p-4 rounded-xl shadow-sm text-center">
+          <p class="font-semibold">Last Login</p>
+          <p class="mt-1 text-gray-600">{{ user.last_login|date:'F j, Y, g:i a' }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
