@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}
+    {% if edit %}
+        Edit Task
+    {% else %}
+        Create Task
+    {% endif %}
+{% endblock %}
+{% block content %}
+<div class="max-w-md mx-auto bg-white p-8 rounded shadow">
+
+    {% if edit %}
+        <h2 class="text-2xl font-bold mb-6 text-blue-600">Edit Task</h2>
+    {% else %}
+        <h2 class="text-2xl font-bold mb-6 text-blue-600">Create Task</h2>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700">
+            {% if edit %}Update Task{% else %}Create Task{% endif %}
+        </button>
+    </form>
+
+    <div class="mt-4 text-center">
+        <a href="{% url 'task_list' %}" class="text-blue-600 hover:underline font-semibold">Back to Task List</a>
+    </div>
+</div>
+{% endblock %}

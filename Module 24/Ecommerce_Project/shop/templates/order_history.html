@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}My Orders - MyShop{% endblock %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">My Orders</h1>
+
+{% for order in orders %}
+  <div class="bg-white shadow rounded-lg p-4 mb-4">
+    <h3>Name: <span class="font-bold">{{ request.user.username|upper }}</span></h3>
+    <h2 class="font-bold">Order #{{ order.id }}</h2>
+    <p class="text-gray-600">Date: {{ order.created_at }}</p>
+    <p class="text-gray-800 font-semibold">Total: {{ order.total_price }} ৳</p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+      {% for item in order.items.all %}
+        <div class="flex items-center gap-4 border p-2 rounded">
+          {% if item.product.image %}
+            <img src="{{ item.product.image.url }}" class="h-24 w-24 object-cover rounded" alt="{{ item.product.name }}">
+          {% else %}
+            <div class="h-24 w-24 flex items-center justify-center bg-gray-200 text-gray-500 rounded">
+              No Image
+            </div>
+          {% endif %}
+          <div>
+            <p class="font-semibold">{{ item.product.name }}</p>
+            <p class="text-sm text-gray-600">{{ item.quantity }} × {{ item.price }} ৳</p>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% empty %}
+  <p>You have no orders yet.</p>
+{% endfor %}
+{% endblock %}

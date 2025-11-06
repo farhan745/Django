@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>
+      {% block title %}
+        TodoApp
+      {% endblock %}
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+  </head>
+  <body class="bg-gray-100 min-h-screen">
+    <nav class="bg-white shadow flex items-center justify-between px-6 py-3">
+      <div class="flex items-center space-x-3">
+        <!-- Gorgeous logo with gradient and checkmark -->
+        <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-tr from-blue-500 via-indigo-500 to-purple-500 shadow-lg">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        </span>
+        <span class="font-extrabold text-3xl bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 bg-clip-text text-transparent tracking-tight drop-shadow">TodoApp</span>
+      </div>
+      <div class="flex items-center space-x-2">
+        <a href="{% url 'hello_protected' %}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded transition">Home</a>
+
+        {% if user.is_authenticated %}
+          <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded transition">Logout</button>
+          </form>
+        {% else %}
+          <a href="{% url 'login' %}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded transition">Login</a>
+          <a href="{% url 'register' %}" class="text-gray-700 hover:text-blue-600 px-3 py-2 rounded transition">Register</a>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+          <span class="inline-flex items-center px-3 py-2 bg-blue-50 text-blue-700 rounded-full font-semibold">
+            <img src="{{ user.profile.picture.url }}" alt="Profile" class="w-8 h-8 rounded-full mr-2 border border-blue-300 object-cover" />
+            {{ user.username }}
+          </span>
+        {% endif %}
+      </div>
+    </nav>
+    <main class="container mx-auto mt-8">
+      {% block content %}
+
+      {% endblock %}
+    </main>
+  </body>
+</html>

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Products - MyShop{% endblock %}
+
+{% block content %}
+<div class="flex justify-between items-center mb-8">
+  <h1 class="text-3xl font-bold text-gray-800">Our Products</h1>
+
+  {% if user.is_superuser %}
+    <a href="{% url 'product_create' %}"
+       class="px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-700 transition">
+      + Create Product
+    </a>
+  {% endif %}
+</div>
+
+<div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+  {% for product in products %}
+  <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition flex flex-col overflow-hidden mx-auto w-full max-w-xs h-72">
+    
+    {% if product.image %}
+      <img src="{{ product.image.url }}" alt="{{ product.name }}" class="h-36 w-full object-cover">
+    {% else %}
+      <img src="{% static 'images/no-image.png' %}" alt="No Image" class="h-36 w-full object-cover">
+    {% endif %}
+
+    <div class="p-4 flex flex-col flex-1">
+      <h2 class="font-semibold text-lg text-gray-800 mb-1 truncate">{{ product.name }}</h2>
+      <p class="text-gray-600 font-medium mb-3 text-base">{{ product.price }} TK</p>
+      <a href="{% url 'product-detail' product.id %}" 
+         class="mt-auto inline-block px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg text-center hover:bg-blue-700 transition">
+         View Details
+      </a>
+    </div>
+  </div>
+  {% empty %}
+    <p class="col-span-full text-center text-gray-500">No products available.</p>
+  {% endfor %}
+</div>
+
+<!-- Pagination -->
+{% if products.has_other_pages %}
+<div class="mt-8 flex justify-center">
+  <nav class="inline-flex -space-x-px text-sm">
+    {% if products.has_previous %}
+      <a href="?page={{ products.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+         class="px-3 py-1 bg-white border border-gray-300 rounded-l-md hover:bg-gray-100">Previous</a>
+    {% else %}
+      <span class="px-3 py-1 bg-gray-200 border border-gray-300 rounded-l-md">Previous</span>
+    {% endif %}
+
+    {% for num in products.paginator.page_range %}
+      {% if products.number == num %}
+        <span class="px-3 py-1 bg-blue-600 text-white border border-gray-300">{{ num }}</span>
+      {% else %}
+        <a href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+           class="px-3 py-1 bg-white border border-gray-300 hover:bg-gray-100">{{ num }}</a>
+      {% endif %}
+    {% endfor %}
+
+    {% if products.has_next %}
+      <a href="?page={{ products.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+         class="px-3 py-1 bg-white border border-gray-300 rounded-r-md hover:bg-gray-100">Next</a>
+    {% else %}
+      <span class="px-3 py-1 bg-gray-200 border border-gray-300 rounded-r-md">Next</span>
+    {% endif %}
+  </nav>
+</div>
+{% endif %}
+{% endblock %}
